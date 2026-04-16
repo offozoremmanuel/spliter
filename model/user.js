@@ -21,16 +21,10 @@ const userSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true,
-        trim: true
     },
      otp: {
       type: String,
       trim: true,
-      default: () => {
-        return Math.round(Math.random() * 1e6)
-          .toString()
-          .padStart(6, "0");
-      },
     },
     profilePicture: {
         secureUrl: {
@@ -68,6 +62,6 @@ const userSchema = new mongoose.Schema({
     },
 });
 
-const userModel = mongoose.model('userInfo', userSchema)
+const userModel = mongoose.model('user', userSchema)
 
 module.exports = userModel;

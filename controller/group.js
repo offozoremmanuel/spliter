@@ -25,6 +25,8 @@ exports.createGroup = async(req, res)=>{
                 message: "minimum number not reached, number must be greater than 2 "
             })
         }
+        newGroup.members.push(req.user.id)
+
         await newGroup.save()
         res.status(201).json({
             message: "Group created successfully",
@@ -36,4 +38,40 @@ exports.createGroup = async(req, res)=>{
             message: "something went wrong"
         })
     }
+}
+exports.getAll = async (req, res) =>{
+    try {
+        const groups = await groupModel.find().populate('members' ,'fullname')    
+        res.status(200).json({
+            message: "Groups retrieved successfully",
+            data: groups
+        })
+    } catch (error) {
+        console.log(error)
+        res.status(500).json({  
+            message: "something went wrong"
+        })
+    }
+}
+
+exports.getOneGroup = async (req, res) =>{
+    try {
+        const {id} = req.params
+        const group = await groupModel.findById(id).populate('members', 'fullname email phoneNumber')
+        if (!group){
+            return res.status(404).json({
+                message: "Group not found"
+            })
+        }
+        res.status(200).json({
+            message: "Group found",
+            data: group
+        })
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({
+            message: "something went wrong"
+        })
+    }
+
 }

@@ -8,9 +8,13 @@ const groupSchema = new mongoose.Schema({
     },
     createdBy:{
         type: mongoose.Schema.Types.ObjectId,
-        ref:'userInfo',
+        ref:'user',
         required: true
     },
+    members:[ {
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: 'user'
+    }],
     contributionAmount: {
         type: String,
         required: true,

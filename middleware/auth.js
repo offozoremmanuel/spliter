@@ -9,14 +9,14 @@ const checkLogin = async(req, res, next)=>{
             })
         }
         
-        const validToken = await jwt.verify(token, process.env.SECERT_KEY)
+        const validToken = await jwt.verify(token, process.env.SECRET_KEY)
         req.user = validToken
         next()
     } catch (error) {
         console.log(error)
         res.status(500).json({
             message: error.message
-        })
+        }) 
     }
 }
 

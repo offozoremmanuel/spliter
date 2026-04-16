@@ -8,10 +8,10 @@ const brevo = async (userEmail, username, html) => {
     const data = {
         htmlContent: `<html><head></head><body><p>Hello ${username} ,</p>Welcome to backend!.</p></body></html>`,
         sender: {
-            email: "oshiobughieailakhu@gmail.com",
-            name: "oshio from Splita",
+            email: process.env.USER_EMAIL,
+            name: "Emmanuel from Splita",
         },
-        subject: "Hello from Splita!",
+        subject: "Splita!",
     };
     sendSmtpEmail.to = [{
         email: userEmail
