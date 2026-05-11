@@ -3,7 +3,7 @@ const joi = require('joi');
 exports.signUpValidator = (req,res, next) =>{
     const schema = joi.object({
         fullname: joi.string().pattern(/^[A-Za-z\s]{4,}$/).required().messages({
-            'any.required':"full Name is required",
+            'any.required':"fullName is required",
             'string.empty':"Fullname cannot be empty",
             'string.pattern.base': "fullname cannot  contain numbers and must be at least 4 characters"
         }),
@@ -96,12 +96,12 @@ exports.changePasswordValidator = (req,res, next) =>{
             'string.empty':"Old password cannot be empty",
             'string.pattern.base': "Old password must be at least 8 characters and must include 1 uppercase and 1 lowercase"
         }),
-        newpassword: joi.string().pattern(/^(?=.*[a-z])(?=.*[A-Z]).{8,}$/).required().messages({
+        newPassword: joi.string().pattern(/^(?=.*[a-z])(?=.*[A-Z]).{8,}$/).required().messages({
             'any.required':"New password is required",
             'string.empty':"New password cannot be empty",
             'string.pattern.base': "New password must be at least 8 characters and must include 1 uppercase and 1 lowercase"
         }),
-        confirmPassword: joi.string().valid(joi.ref('newpassword')).required().messages({
+        comfirmPassword: joi.string().valid(joi.ref('newPassword')).required().messages({
             'any.required':"confirm password is required",
             'any.only': "confirm password must match new password"
         }),

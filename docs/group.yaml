@@ -1,0 +1,99 @@
+openapi: 3.0.0
+info: 
+  title: documentation for user
+  version: 1.0.0
+  description: splita for user
+paths: 
+  /api/v1/group:
+    post:
+      summary: this endpoint is to create a group
+      tags: [group]
+      security:
+         - bearerAuth: []
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - groupname,
+                - contributionAmount, 
+                - contributionFrequency, 
+                - payoutFrequency, 
+                - describeGroup, 
+                - totalMembers,
+              properties:
+                groupname: 
+                  type: string
+                  example: family group
+                contributionAmount: 
+                  type: string
+                  example: "5000"
+                contributionFrequency:
+                  type: string
+                  enum: [daily, weekly, monthly]
+                  example: monthly
+                payoutFrequency:
+                  type: string
+                  enum: [daily, weekly, monthly]
+                  example: monthly
+                describeGroup:
+                  type: string
+                  example: this is a family group where we contribute and take turns to receive payout every month
+                totalMembers:
+                  type: number
+                  example: 5
+      responses:
+        "201": 
+          description: group successfully created
+                
+
+    get:
+      summary: this endpoint is to get all groups
+      tags: [group]
+      security:
+         - bearerAuth: []
+      
+      responses:
+        "200": 
+          description: successfully retrieved all groups
+                
+  /api/v1/group/{id}:
+    get:
+      summary: this endpoint is to get a group by id
+      tags: [group]
+      security:
+         - bearerAuth: []
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+          example: 64a1f8c9e4b0c2d5f8a9b7c
+      responses:
+        "200": 
+          description: successfully retrieved group by id
+    /api/v1/group/{groupId}/members/{memberId}:
+      delete:
+        summary: this endpoint is to remove a member from a group
+        tags: [group]
+        security:
+           - bearerAuth: []
+        parameters:
+          - in: path
+            name: groupId
+            required: true
+            schema:
+              type: string
+            example: 64a1f8c9e4b0c2d5f8a9b7c
+          - in: path
+            name: memberId
+            required: true
+            schema:
+              type: string
+            example: 64a1f8c9e4b0c2d5f8a9b7d
+        responses:
+          "200": 
+            description: successfully removed member from group

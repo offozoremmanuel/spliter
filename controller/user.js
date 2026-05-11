@@ -130,11 +130,11 @@ exports.login = async (req, res) => {
                 message: 'Invalid Credentials'
             })
         }
-        if (user.isVerified == false) {
-            return res.status(400).json({
-                message: 'Please verify your email'
-            })
-        };
+        // if (user.isVerified == false) {
+        //     return res.status(400).json({
+        //         message: 'Please verify your email'
+        //     })
+        // };
 
         const token = jwt.sign(
             {id: user._id, role: user.role},
@@ -170,7 +170,7 @@ exports.forgetPassword = async (req, res) => {
         // Save OTP and expiration time to user document
         user.otp = OTP
         user.otpExpire = Date.now() +( 1000 * 60 * 7) // OTP valid for 7 minutes
-    
+        console.log(OTP)
         const data = {
             name: user.fullname,
             otp:OTP
@@ -194,7 +194,7 @@ exports.forgetPassword = async (req, res) => {
 
 exports.resetPassword = async (req, res) => {
     try {
-        const {email, otp, Password} = req.body
+        const {email, otp, password} = req.body
         const user = await userModel.findOne({ email: email.toLowerCase() })
         // Check if user exists
         if (user == null){
@@ -208,7 +208,7 @@ exports.resetPassword = async (req, res) => {
             })
         }
         const salt = await bcryot.genSalt(10)
-        const hashedPassword = await bcryot.hash(Password, salt)
+        const hashedPassword = await bcryot.hash(password, salt)
         user.password = hashedPassword
         await user.save()
         
@@ -228,7 +228,7 @@ exports.resetPassword = async (req, res) => {
     }
 }
 
-exports.changePasword = async (req,res) =>{
+exports.changePassword = async (req,res) =>{
     try {
         const {id} = req.params
         const {oldPassword, newPassword} = req.body;
@@ -277,3 +277,38 @@ exports.loginWithGoogle = async (req, res) =>{
         })
     }
 }
+
+exports.getAllUsers = async (req, res) =>{
+    try {
+        const users = await userModel.find()
+        res.status(200).json({
+            message: 'Users retrieved successfully',
+            data: users
+        })
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({
+            message: 'Something went wrong'
+        })
+    }
+}
+exports.deleteUser = async (req, res) =>{
+    try {
+        const {id} = req.params
+        const user = await userModel.findByIdAndDelete(id)
+        if (!user) {
+            return res.status(404).json({
+                message: 'User not found'
+            })
+        }
+        res.status(200).json({
+            message: 'User deleted successfully'
+        })
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({
+            message: 'Something went wrong'
+        })
+    }
+}
+

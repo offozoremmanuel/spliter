@@ -51,8 +51,8 @@ const userSchema = new mongoose.Schema({
     otpExpire:{
         type: Date,
          default: ()=>{
-        return Date.now() + (1000*60*7)
-}
+         return Date.now() + (1000*60*7)
+    }
     },
     accountNumber: {
         type: String,

@@ -23,3 +23,6 @@ const requestSchema = new mongoose.Schema({
         required: true
     }
 })
+const GroupRequestModel = mongoose.model('GroupRequest', requestSchema);
+
+module.exports = GroupRequestModel;

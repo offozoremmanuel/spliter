@@ -1,12 +1,13 @@
 const router = require('express').Router()
-const {checkLogin} = require('../middleware/auth')
-const { createGroup, getAll, getOneGroup } = require('../controller/group')
+const {checkLogin,adminAuth} = require('../middleware/auth')
+const { createGroup, getAll, getOneGroup, removeMenberfromGroup } = require('../controller/group')
 const { groupValidator } = require('../middleware/validator')
 
-router.post('/group',groupValidator, checkLogin, createGroup)
+router.post('/',groupValidator, checkLogin, createGroup)
 
-router.get('/group', checkLogin, getAll )
+router.get('/', checkLogin,adminAuth, getAll )
 
-router.get('/group/:id', checkLogin, getOneGroup)
+router.get('/:id', checkLogin,adminAuth, getOneGroup)
+router.delete('/:groupId/members/:memberId', checkLogin, adminAuth, removeMenberfromGroup)
 
 module.exports = router

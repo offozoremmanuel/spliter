@@ -75,3 +75,42 @@ exports.getOneGroup = async (req, res) =>{
     }
 
 }
+exports.removeMenberfromGroup = async (req, res) =>{
+    try {
+        const {id} = req.user;
+        const {groupId , memberId} = req.params
+        const group = await groupModel.findById(groupId)
+        if(!group){
+            return res.status(404).json({
+                message: "Group not found"
+            })
+        }
+        if(group.createdBy.toString() !== id){
+            return res.status(403).json({
+                message: "Unauthorized: Only group admin can remove members"
+            })
+        }
+        if(createdBy.toString() === memberId){
+            return res.status(403).json({
+                message: "Unauthorized: Admin cannot remove themselves from the group"
+            })
+        }
+        const memberIndex = group.members.findIndex(member => member.toString() === memberId)
+        if(memberIndex === -1){
+            return res.status(404).json({
+                message: "Member not found in the group"
+            })
+        }
+        group.members.splice(memberIndex, 1)
+        await group.save()
+        res.status(200).json({
+            message: "Member removed from the group"
+        })
+    } catch (error) {
+        console.log(error.message)
+        res.status(500).json({
+            message: "something went wrong"
+        })
+    }
+
+}

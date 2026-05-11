@@ -1,0 +1,189 @@
+openapi: 3.0.0
+info: 
+  title: documentation for user
+  version: 1.0.0
+  description: splita for user
+paths: 
+  /api/v1/user:
+    post:
+      summary: this endpoint is to create a user
+      tags: [users]
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - email
+                - fullname
+                - phoneNumber
+                - password
+              properties:
+                fullname: 
+                  type: string
+                  example: john deo
+                email: 
+                  type: string
+                  example: johndeo@gmail.com
+                phoneNumber:
+                  type: string
+                  example: 090235683768
+                password:
+                  type: string
+      responses:
+        "201": 
+          description: user successfully created
+                
+
+  /api/v1/user/login:
+    post:
+      summary: this endpoint is to login a user
+      tags: [users]
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - email
+                - password
+              properties:
+                email: 
+                  type: string
+                  example: johndeo@gmail.com
+                password:
+                  type: string
+      responses:
+        "201": 
+          description: login successful
+                
+  /api/v1/user/check:
+    post:
+      summary: this endpoint is to verify a user
+      tags: [users]
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - email
+                - otp
+              properties:
+                email: 
+                  type: string
+                  example: johndeo@gmail.com
+                otp:
+                  type: string
+      responses:
+        "201": 
+          description:  successful verification
+                
+  /api/v1/user/forget-password:
+    post:
+      summary: this endpoint is to request a password reset for a user
+      tags: [users]
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - email
+              properties:
+                email: 
+                  type: string
+                  example: johndeo@gmail.com
+      responses:
+        "201": 
+          description: successfully requested for password reset
+                
+  /api/v1/user/reset-password:
+    post:
+      summary: this endpoint is to reset the password for a user
+      tags: [users]
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: 
+                - email
+                - otp
+                - password
+                - confirmPassword
+              properties:
+                email: 
+                  type: string
+                  example: johndeo@gmail.com
+                otp:
+                  type: string
+                password:
+                  type: string
+                confirmPassword:
+                  type: string
+      responses:
+        "201": 
+          description: reset password successfully
+                
+  /api/v1/user/change-password:
+    post:
+      summary: this endpoint is to change the password for a user
+      tags: [users]
+      security:
+        - bearerAuth: []
+      requestBody: 
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - oldPassword
+                - newPassword
+                - comfirmPassword
+              properties:
+                oldPassword:
+                  type: string
+                newPassword:
+                  type: string
+                comfirmPassword:
+                  type: string
+      responses:
+        "201": 
+          description: change password successfully
+                
+  /api/v1/user/update/{id}:
+    put:
+      summary: this endpoint is to update user picture
+      parameters:
+        - in: path
+          name: id
+      tags: [users]
+      requestBody: 
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - bankName
+                - accountNumber
+                - profilePicture
+              properties:
+                bankName:
+                  type: string
+                accountNumber:
+                  type: string
+                profilePicture:
+                  type: string
+                  format: binary
+      responses:
+        "200": 
+          description: successfully updated profile
+                
